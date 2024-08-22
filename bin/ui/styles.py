@@ -144,17 +144,117 @@ MAIN_WINDOW = """
         border-radius: 10%;
     }
 
-    QPushButton#btn_open_weigher_menu{
+    QPushButton#btn_open_weighers_menu{
         background: #28282B;
         color: #FF0000;
         border-radius: 10%;
     }
-    QPushButton#btn_open_weigher_menu:hover{
+    QPushButton#btn_open_weighers_menu:hover{
         background: rgba(0, 173, 255, 0.1);
         border-radius: 10%;
     }
-    QPushButton#btn_open_weigher_menu:pressed{
+    QPushButton#btn_open_weighers_menu:pressed{
         background: rgba(0, 173, 255, 0.5);
         border-radius: 10%;
+    }
+"""
+
+SETTINGS_WINDOW = """
+    QWidget#SettingsWindowUI {
+        background: #343434;
+        color: white;
+    }
+    QWidget#widget_top_bar_frame {
+        background: #28282B;
+        color: white;
+    }
+
+    QCheckBox#chb_use_weighers {
+        background: #343434;
+        color: white;
+    }
+    QCheckBox#chb_use_weighers::indicator {
+        background: 343434;
+        width: 30px;
+        height: 30px;
+    }
+    QCheckBox#chb_use_weighers::indicator:unchecked {
+        image: url(bin/resources/switch-off.png);
+    }
+    QCheckBox#chb_use_weighers::indicator:checked {
+        image: url(bin/resources/switch-on.png);
+    }
+
+    QLabel#labels_name {
+        background: #343434;
+        color: white;
+    }
+    QLabel#labels_name[enabled="false"] {color: gray;}
+
+    QComboBox#comboboxes {
+        background: #28282B;
+        color: white;
+        border: 1px solid #343434;
+    }
+    QComboBox#comboboxes:drop-down {
+        width: 0px;
+        height: 0px;
+        border: 0px;
+    }
+    QComboBox#comboboxes QAbstractItemView {
+        color: white;	
+        background-color: #28282B;
+        padding: 5px;
+    }
+    QComboBox#comboboxes QScrollBar {
+        width: 0px;
+        height: 0px;
+        border: 0px;
+    }
+    QComboBox#comboboxes[enabled="false"] {color: gray;}
+
+    QPushButton#btn_to_default {
+        background: #28282B;
+        color: #FF0000;
+        border-radius: 15%;
+    }
+    QPushButton#btn_to_default:hover{
+        background: rgba(0, 173, 255, 0.1);
+    }
+    QPushButton#btn_to_default:pressed{
+        background: rgba(0, 173, 255, 0.5);
+    }
+
+    QPushButton#buttons {
+        background: #28282B;
+        color: #FF0000;
+        border-radius: 15%;
+    }
+    QPushButton#buttons:hover{
+        background: rgba(0, 173, 255, 0.1);
+    }
+    QPushButton#buttons:pressed{
+        background: rgba(0, 173, 255, 0.5);
+    }
+
+    QMessageBox {
+        background: #28282B;
+        color: white;
+    }
+    QMessageBox QLabel{
+        background: #28282B;
+        color: white;
+    }
+
+    QMessageBox QPushButton{
+        background: #28282B;
+        color: #FF0000;
+        border-radius: 15%;
+    }
+    QMessageBox QPushButton:hover{
+        background: rgba(0, 173, 255, 0.1);
+    }
+    QMessageBox QPushButton:pressed{
+        background: rgba(0, 173, 255, 0.5);
     }
 """

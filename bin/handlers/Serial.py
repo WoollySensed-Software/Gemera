@@ -1,6 +1,6 @@
 from PySide6.QtSerialPort import QSerialPortInfo
 
-from settings import CFG_PATH, DEFAULT_CFG
+from settings import CFG_PATH
 from bin.handlers.ConfigurationFile import ConfigurationFileH
 
 
@@ -18,26 +18,26 @@ class SerialH:
     def get_default_com_port() -> int:
         cfg = ConfigurationFileH(CFG_PATH)
         cfg.exists()
-        data = cfg.cfg_reader.get('serial')['COM']
+        data = cfg.get('serial')['COM']
         return SerialH.get_com_ports().index(str(data))
     
     @staticmethod
     def get_default_baud_rate() -> int:
         cfg = ConfigurationFileH(CFG_PATH)
         cfg.exists()
-        data = cfg.cfg_reader.get('serial')['BAUD']
+        data = cfg.get('serial')['BAUD']
         return SerialH.get_baud_rates().index(str(data))
     
     @staticmethod
-    def get_default_weigher_com_port() -> int:
+    def get_default_weighers_com_port() -> int:
         cfg = ConfigurationFileH(CFG_PATH)
         cfg.exists()
-        data = cfg.cfg_reader.get('weigher')['COM']
+        data = cfg.get('weighers')['COM']
         return SerialH.get_com_ports().index(str(data))
     
     @staticmethod
-    def get_default_weigher_baud_rate() -> int:
+    def get_default_weighers_baud_rate() -> int:
         cfg = ConfigurationFileH(CFG_PATH)
         cfg.exists()
-        data = cfg.cfg_reader.get('weigher')['BAUD']
+        data = cfg.get('weighers')['BAUD']
         return SerialH.get_baud_rates().index(str(data))

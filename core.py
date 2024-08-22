@@ -28,4 +28,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    # TODO: исправить все ошибки в слове "весы" на "weighers"

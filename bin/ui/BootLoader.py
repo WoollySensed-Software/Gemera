@@ -7,9 +7,7 @@ from PySide6.QtGui import QFont
 
 from bin.handlers.types import *
 from bin.handlers.ConfigurationFile import ConfigurationFileH
-# from bin.ui.MainWindow import MainWindowUI
-# from bin.ui.New_MainWindow import MainWindowUI
-from bin.ui.SuperNew_MainWindow import MainWindowUI
+from bin.ui.MainWindow import MainWindowUI
 from bin.ui.styles import BOOT_LOADER
 
 
@@ -19,19 +17,15 @@ class BootLoaderUI(QWidget):
         super().__init__()
         self.cfg_path = cfg_path
         self.includes = includes
-
         self.default_font = QFont('Sans Serif', 16)
         self.spec_font = QFont('Sans Serif', 12)
-
         self.cfg_handler = ConfigurationFileH(self.cfg_path)
     
     def setup_ui(self):
         self.setFixedSize(QSize(600, 300))
         self.setWindowOpacity(0.8)  # прозрачность окна
-        self.setWindowFlags(
-            Qt.WindowType.FramelessWindowHint | 
-            Qt.WindowType.WindowStaysOnTopHint
-        )  # берамочное + поверх всех окон
+        self.setWindowFlags(Qt.WindowType.FramelessWindowHint | 
+                            Qt.WindowType.WindowStaysOnTopHint)
         self.setStyleSheet(BOOT_LOADER)
         self.setObjectName('BootLoaderUI')
 
@@ -57,7 +51,7 @@ class BootLoaderUI(QWidget):
             QTimer.singleShot(0, self._open_main_window)
 
     def _check_program_structure(self) -> bool:
-        self.cfg_handler.exists  # создаст файл cfg, если его не существует
+        self.cfg_handler.exists()  # создаст файл cfg, если его не существует
 
         errors = []
         for file, path in self.includes.items():
