@@ -6,7 +6,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QCursor, QFont
 from PySide6.QtCore import Qt, QSize
 
-from settings import CFG_PATH
+from settings import CFG_PATH, INCLUDES
 from bin.ui.styles import SETTINGS_WINDOW
 from bin.handlers.ConfigurationFile import ConfigurationFileH
 from bin.handlers.Serial import SerialH

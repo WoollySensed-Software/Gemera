@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QCursor, QFont, QIcon
 from PySide6.QtCore import Qt, QSize, QPoint
 
-from settings import __app_name__, CFG_PATH
+from settings import __app_name__, CFG_PATH, INCLUDES, middle_path
 from bin.ui.styles import MAIN_WINDOW
 from bin.handlers.ConfigurationFile import ConfigurationFileH
 from bin.handlers.Graph import GraphH
@@ -57,7 +57,8 @@ class MainWindowUI(QWidget):
         self.btn_tb_settings = QPushButton()
         # self.btn_tb_settings.setFont(self.spec_font)
         # self.btn_tb_settings.setText('⚒')  # TODO: использовать иконку
-        self.btn_tb_settings.setIcon(QIcon('bin/resources/gear.png'))
+        # self.btn_tb_settings.setIcon(QIcon('bin/resources/gear.png'))
+        self.btn_tb_settings.setIcon(QIcon(INCLUDES['gear.png'][2]))
         self.btn_tb_settings.setIconSize(QSize(20, 20))
         self.btn_tb_settings.setFixedSize(QSize(30, 30))
         self.btn_tb_settings.setObjectName('top_bar_buttons')
@@ -67,7 +68,8 @@ class MainWindowUI(QWidget):
         self.btn_tb_minimize = QPushButton()
         # self.btn_tb_minimize.setFont(self.spec_font)
         # self.btn_tb_minimize.setText('▬')  # TODO: использовать иконку
-        self.btn_tb_minimize.setIcon(QIcon('bin/resources/minus.png'))
+        # self.btn_tb_minimize.setIcon(QIcon('bin/resources/minus.png'))
+        self.btn_tb_minimize.setIcon(QIcon(INCLUDES['minus.png'][2]))
         self.btn_tb_minimize.setIconSize(QSize(20, 20))
         self.btn_tb_minimize.setFixedSize(QSize(30, 30))
         self.btn_tb_minimize.setObjectName('top_bar_buttons')
@@ -77,7 +79,8 @@ class MainWindowUI(QWidget):
         self.btn_tb_full_screen = QPushButton()
         # self.btn_tb_full_screen.setFont(self.spec_font)
         # self.btn_tb_full_screen.setText('[]')
-        self.btn_tb_full_screen.setIcon(QIcon('bin/resources/fullscreen.png'))
+        # self.btn_tb_full_screen.setIcon(QIcon('bin/resources/fullscreen.png'))
+        self.btn_tb_full_screen.setIcon(QIcon(INCLUDES['fullscreen.png'][2]))
         self.btn_tb_full_screen.setIconSize(QSize(20, 20))
         self.btn_tb_full_screen.setFixedSize(QSize(30, 30))
         self.btn_tb_full_screen.setObjectName('top_bar_buttons')
@@ -87,7 +90,8 @@ class MainWindowUI(QWidget):
         self.btn_tb_exit = QPushButton(self.widget_top_bar_frame)
         # self.btn_tb_exit.setFont(self.spec_font)
         # self.btn_tb_exit.setText('✖')  # TODO: использовать иконку
-        self.btn_tb_exit.setIcon(QIcon('bin/resources/close.png'))
+        # self.btn_tb_exit.setIcon(QIcon('bin/resources/close.png'))
+        self.btn_tb_exit.setIcon(QIcon(INCLUDES['close.png'][2]))
         self.btn_tb_exit.setIconSize(QSize(15, 15))
         self.btn_tb_exit.setFixedSize(QSize(30, 30))
         self.btn_tb_exit.setObjectName('top_bar_buttons')
@@ -585,7 +589,8 @@ class MainWindowUI(QWidget):
 
     def _exit(self):
         # TODO: сделать проверку состояния COM порта
-        exit()
+        # exit()
+        self.close()
 
     def _show_weighers_menu(self):
         self.weighers_win = WeighersWindowUI()

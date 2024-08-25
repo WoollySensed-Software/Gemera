@@ -7,7 +7,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QCursor, QFont, QIcon
 from PySide6.QtCore import Qt, QSize
 
-from settings import CFG_PATH
+from settings import CFG_PATH, INCLUDES, middle_path
 from bin.ui.styles import WEIGHERS_WINDOW
 from bin.handlers.ConfigurationFile import ConfigurationFileH
 from bin.handlers.Serial import SerialH
@@ -68,7 +68,8 @@ class WeighersWindowUI(QWidget):
         self.btn_tb_minimize = QPushButton()
         # self.btn_tb_minimize.setFont(self.spec_font)
         # self.btn_tb_minimize.setText('▬')  # TODO: использовать иконку
-        self.btn_tb_minimize.setIcon(QIcon('bin/resources/minus.png'))
+        # self.btn_tb_minimize.setIcon(QIcon('bin/resources/minus.png'))
+        self.btn_tb_minimize.setIcon(QIcon(INCLUDES['minus.png'][2]))
         self.btn_tb_minimize.setIconSize(QSize(20, 20))
         self.btn_tb_minimize.setFixedSize(QSize(30, 30))
         self.btn_tb_minimize.setObjectName('top_bar_buttons')
@@ -78,7 +79,8 @@ class WeighersWindowUI(QWidget):
         self.btn_tb_exit = QPushButton(self.widget_top_bar_frame)
         # self.btn_tb_exit.setFont(self.spec_font)
         # self.btn_tb_exit.setText('✖')  # TODO: использовать иконку
-        self.btn_tb_exit.setIcon(QIcon('bin/resources/close.png'))
+        # self.btn_tb_exit.setIcon(QIcon('bin/resources/close.png'))
+        self.btn_tb_exit.setIcon(QIcon(INCLUDES['close.png'][2]))
         self.btn_tb_exit.setIconSize(QSize(15, 15))
         self.btn_tb_exit.setFixedSize(QSize(30, 30))
         self.btn_tb_exit.setObjectName('top_bar_buttons')
