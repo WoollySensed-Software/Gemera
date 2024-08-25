@@ -32,7 +32,7 @@ MAIN_WINDOW = """
         border-radius: 50%;
     }
 
-    QWidget#self.widget_central_area {
+    QWidget#widget_central_area {
         background: #343434;
         color: white;
     }
@@ -157,6 +157,7 @@ MAIN_WINDOW = """
         background: rgba(0, 173, 255, 0.5);
         border-radius: 10%;
     }
+    QPushButton#btn_open_weighers_menu[enabled="false"] {color: gray;}
 """
 
 SETTINGS_WINDOW = """
@@ -214,7 +215,7 @@ SETTINGS_WINDOW = """
     QComboBox#comboboxes[enabled="false"] {color: gray;}
 
     QPushButton#btn_to_default {
-        background: #28282B;
+        background: #343434;
         color: #FF0000;
         border-radius: 15%;
     }
@@ -226,7 +227,7 @@ SETTINGS_WINDOW = """
     }
 
     QPushButton#buttons {
-        background: #28282B;
+        background: #343434;
         color: #FF0000;
         border-radius: 15%;
     }
@@ -255,6 +256,73 @@ SETTINGS_WINDOW = """
         background: rgba(0, 173, 255, 0.1);
     }
     QMessageBox QPushButton:pressed{
+        background: rgba(0, 173, 255, 0.5);
+    }
+"""
+
+WEIGHERS_WINDOW = """
+    QWidget#WeighersWindowUI {
+        background: #343434;
+        color: white;
+    }
+    QWidget#widget_top_bar_frame {
+        background: #28282B;
+        color: white;
+    }
+    QWidget#widget_central_area {
+        background: #343434;
+        color: white;
+    }
+
+    QLabel#lbl_tb_title {
+        background: #28282B;
+        color: white;
+    }
+
+    QPushButton#top_bar_buttons {
+        background: #28282B;
+        color: #FF0000;
+        border-radius: 50%;
+    }
+    QPushButton#top_bar_buttons:hover{
+        background: rgba(0, 173, 255, 0.1);
+        border-radius: 50%;
+    }
+    QPushButton#top_bar_buttons:pressed{
+        background: rgba(0, 173, 255, 0.5);
+        border-radius: 50%;
+    }
+
+    QComboBox#cb_command {
+        background: #28282B;
+        color: white;
+        border: 1px solid #343434;
+    }
+    QComboBox#cb_command:drop-down {
+        width: 0px;
+        height: 0px;
+        border: 0px;
+    }
+    QComboBox#cb_command QAbstractItemView {
+        color: white;	
+        background-color: #28282B;
+        padding: 5px;
+    }
+    QComboBox#cb_command QScrollBar {
+        width: 0px;
+        height: 0px;
+        border: 0px;
+    }
+
+    QPushButton#buttons {
+        background: #343434;
+        color: #FF0000;
+        border-radius: 15%;
+    }
+    QPushButton#buttons:hover{
+        background: rgba(0, 173, 255, 0.1);
+    }
+    QPushButton#buttons:pressed{
         background: rgba(0, 173, 255, 0.5);
     }
 """

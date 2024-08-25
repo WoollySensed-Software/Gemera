@@ -14,8 +14,9 @@ from bin.handlers.Serial import SerialH
 
 class SettingsWindowUI(QWidget):
 
-    def __init__(self):
+    def __init__(self, btn_weighers_menu: QPushButton):
         super().__init__()
+        self.btn_weighers_menu = btn_weighers_menu
         self.old_pos = None
         self.default_font = QFont('Sans Serif', 16)
         self.cfg_handler = ConfigurationFileH(CFG_PATH)
@@ -149,6 +150,7 @@ class SettingsWindowUI(QWidget):
         self.cb_weighers_baud_rate.setCurrentIndex(
             SerialH.get_default_weighers_baud_rate())
         self.cb_weighers_baud_rate.setEnabled(self.chb_use_weighers.isChecked())
+        self.cb_weighers_baud_rate.setMaxVisibleItems(5)
         self.cb_weighers_baud_rate.setObjectName('comboboxes')
 
         self.hlayout_weighers_baud_rate = QHBoxLayout()
@@ -235,8 +237,7 @@ class SettingsWindowUI(QWidget):
             # проверяем, чтобы курсор был внутри виджета self.toolBar
             if x_main <= cursor_x <= x_main + self.geometry().width():
                 if (y_main <= cursor_y <= y_main + 
-                    self.widget_top_bar_frame.geometry().height()
-                    ):
+                    self.widget_top_bar_frame.geometry().height()):
                     self.old_pos = event.pos()
                 else: self.old_pos = None
         elif event.button() == Qt.MouseButton.RightButton:
@@ -260,17 +261,22 @@ class SettingsWindowUI(QWidget):
         self.cb_weighers_com_port.setEnabled(self.check_state)
         self.lbl_weighers_baud_rate.setEnabled(self.check_state)
         self.cb_weighers_baud_rate.setEnabled(self.check_state)
+        self.btn_weighers_menu.setEnabled(self.check_state)
 
         if not self.check_state:
             self.lbl_weighers_com_port.setStyleSheet('[enabled="false"]{color: gray;}')
             self.cb_weighers_com_port.setStyleSheet('[enabled="false"]{color: gray;}')
             self.lbl_weighers_baud_rate.setStyleSheet('[enabled="false"]{color: gray;}')
             self.cb_weighers_baud_rate.setStyleSheet('[enabled="false"]{color: gray;}')
+
+            self.btn_weighers_menu.setStyleSheet('[enabled="false"]{color: gray;}')
         else:
             self.lbl_weighers_com_port.setStyleSheet('[enabled="true"]{color: white;}')
             self.cb_weighers_com_port.setStyleSheet('[enabled="true"]{color: white;}')
             self.lbl_weighers_baud_rate.setStyleSheet('[enabled="true"]{color: white;}')
             self.cb_weighers_baud_rate.setStyleSheet('[enabled="true"]{color: white;}')
+
+            self.btn_weighers_menu.setStyleSheet('[enabled="true"]{color: red;}')
 
     def _ok_clicked(self):
         self.close()

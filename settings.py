@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 
-__version__ = '1.5.0'  # global.major.minor
+__version__ = '1.6.0'  # global.major.minor
 __app_name__ = 'Gemera'
 __author__ = 'WoollySensed Software'
 

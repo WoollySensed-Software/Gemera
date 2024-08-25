@@ -12,6 +12,7 @@ from bin.ui.styles import MAIN_WINDOW
 from bin.handlers.ConfigurationFile import ConfigurationFileH
 from bin.handlers.Graph import GraphH
 from bin.ui.SettingsWindow import SettingsWindowUI
+from bin.ui.WeighersWindow import WeighersWindowUI
 
 
 class MainWindowUI(QWidget):
@@ -112,7 +113,7 @@ class MainWindowUI(QWidget):
         """CentralAreaWidget"""
         # --- основная обаласть ---
         self.widget_central_area = QWidget()
-        self.widget_central_area.setObjectName('self.widget_central_area')
+        self.widget_central_area.setObjectName('widget_central_area')
 
         """область режимов ванны"""
         # --- область режимов ванны ---
@@ -492,6 +493,8 @@ class MainWindowUI(QWidget):
         self.btn_open_weighers_menu.setFont(QFont('Sans Serif', 10))
         self.btn_open_weighers_menu.setText('МЕНЮ ВЕСОВ')
         self.btn_open_weighers_menu.setFixedSize(QSize(120, 20))
+        self.btn_open_weighers_menu.setEnabled(
+            self.cfg_handler.get('weighers')['use_weighers'])
         self.btn_open_weighers_menu.setObjectName('btn_open_weighers_menu')
         self.btn_open_weighers_menu.clicked.connect(self._show_weighers_menu)
 
@@ -557,29 +560,44 @@ class MainWindowUI(QWidget):
             if hasattr(self, 'settings_win'):
                 self.settings_win.move(
                     self.pos() + delta + QPoint(
-                        self.geometry().width() - 
-                        self.settings_win.geometry().width() - 90, 
+                        self.geometry().width() - self.settings_win.width() - 90, 
                         self.widget_top_bar_frame.height()
-                    )
-                )
+                    ))
+            
+            if hasattr(self, 'weighers_win'):
+                self.weighers_win.move(
+                    self.pos() + delta + QPoint(
+                        self.geometry().width() - self.weighers_win.width(), 
+                        self.geometry().height() - self.weighers_win.height() - 30
+                    ))
 
     def _show_settings(self):
-        self.settings_win = SettingsWindowUI()
+        self.settings_win = SettingsWindowUI(self.btn_open_weighers_menu)
         self.settings_win.setup_ui()
         self.settings_win.show()
 
-        self.settings_win_width = (self.geometry().left() + self.geometry().width() - 
-                                   self.settings_win.geometry().width() - 90)
-        self.settings_win_height = (self.geometry().top() + 
-                                    self.widget_top_bar_frame.height())
-        self.settings_win.move(self.settings_win_width, self.settings_win_height)
+        # перемещение окна к позиции под кнопкой настроек
+        self.settings_win_x = (self.geometry().left() + self.geometry().width() - 
+                               self.settings_win.width() - 90)
+        self.settings_win_y = (self.geometry().top() + 
+                               self.widget_top_bar_frame.height())
+        self.settings_win.move(self.settings_win_x, self.settings_win_y)
 
     def _exit(self):
         # TODO: сделать проверку состояния COM порта
         exit()
 
     def _show_weighers_menu(self):
-        pass
+        self.weighers_win = WeighersWindowUI()
+        self.weighers_win.setup_ui()
+        self.weighers_win.show()
+
+        # перемещение окна к позиции над кнопкой меню весов
+        self.weighers_win_x = (self.geometry().left() + self.geometry().width() - 
+                               self.weighers_win.width())
+        self.weighers_win_y = (self.geometry().top() + self.geometry().height() - 
+                               self.weighers_win.height() - 30)
+        self.weighers_win.move(self.weighers_win_x, self.weighers_win_y)
 
     def _open_port_clicked(self):
         self.__change_com_port_status(self.btn_open_com_port.isVisible())
