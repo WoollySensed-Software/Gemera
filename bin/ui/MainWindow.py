@@ -1,3 +1,5 @@
+import sys
+
 from PySide6.QtWidgets import (
     QWidget, QLabel, QPushButton, 
     QRadioButton, QButtonGroup, QLineEdit, 
@@ -7,8 +9,7 @@ from PySide6.QtWidgets import (
 from PySide6.QtGui import QCursor, QFont, QIcon
 from PySide6.QtCore import Qt, QSize, QPoint
 
-from settings import __app_name__, CFG_PATH, INCLUDES, middle_path
-from bin.ui.styles import MAIN_WINDOW
+from settings import __app_name__, CFG_PATH, INCLUDES
 from bin.handlers.ConfigurationFile import ConfigurationFileH
 from bin.handlers.Graph import GraphH
 from bin.ui.SettingsWindow import SettingsWindowUI
@@ -32,14 +33,13 @@ class MainWindowUI(QWidget):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint)
         self.setMinimumHeight(740)
         self.resize(self.default_width, self.default_height)
-        self.setStyleSheet(MAIN_WINDOW)
         self.setObjectName('MainWindowUI')
 
         """TopBarWidget"""
         # --- верхняя панель ---
         self.widget_top_bar_frame = QWidget()
         self.widget_top_bar_frame.setFixedHeight(30)
-        self.widget_top_bar_frame.setObjectName('widget_top_bar_frame')
+        self.widget_top_bar_frame.setObjectName('BarFrame')
 
         # --- изменение размера окна ---
         self.top_left_size_grip = QSizeGrip(self.widget_top_bar_frame)
@@ -51,50 +51,42 @@ class MainWindowUI(QWidget):
         self.lbl_tb_title.setText(__app_name__)
         self.lbl_tb_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_tb_title.setFixedWidth(200)
-        self.lbl_tb_title.setObjectName('lbl_tb_title')
+        self.lbl_tb_title.setObjectName('BF-Title')
         
         # --- кнопка настроек ---
         self.btn_tb_settings = QPushButton()
-        # self.btn_tb_settings.setFont(self.spec_font)
-        # self.btn_tb_settings.setText('⚒')  # TODO: использовать иконку
-        # self.btn_tb_settings.setIcon(QIcon('bin/resources/gear.png'))
-        self.btn_tb_settings.setIcon(QIcon(INCLUDES['gear.png'][2]))
+        self.btn_tb_settings.setIcon(QIcon(
+            f'{INCLUDES['gear.png'][0]}'.replace('\\', '/')))
         self.btn_tb_settings.setIconSize(QSize(20, 20))
         self.btn_tb_settings.setFixedSize(QSize(30, 30))
-        self.btn_tb_settings.setObjectName('top_bar_buttons')
+        self.btn_tb_settings.setObjectName('BF-Buttons')
         self.btn_tb_settings.clicked.connect(self._show_settings)
 
         # --- кнопка минимизации ---
         self.btn_tb_minimize = QPushButton()
-        # self.btn_tb_minimize.setFont(self.spec_font)
-        # self.btn_tb_minimize.setText('▬')  # TODO: использовать иконку
-        # self.btn_tb_minimize.setIcon(QIcon('bin/resources/minus.png'))
-        self.btn_tb_minimize.setIcon(QIcon(INCLUDES['minus.png'][2]))
+        self.btn_tb_minimize.setIcon(QIcon(
+            f'{INCLUDES['minus.png'][0]}'.replace('\\', '/')))
         self.btn_tb_minimize.setIconSize(QSize(20, 20))
         self.btn_tb_minimize.setFixedSize(QSize(30, 30))
-        self.btn_tb_minimize.setObjectName('top_bar_buttons')
+        self.btn_tb_minimize.setObjectName('BF-Buttons')
         self.btn_tb_minimize.clicked.connect(self.showMinimized)
 
         # --- кнопка полного экрана ---
         self.btn_tb_full_screen = QPushButton()
-        # self.btn_tb_full_screen.setFont(self.spec_font)
-        # self.btn_tb_full_screen.setText('[]')
-        # self.btn_tb_full_screen.setIcon(QIcon('bin/resources/fullscreen.png'))
-        self.btn_tb_full_screen.setIcon(QIcon(INCLUDES['fullscreen.png'][2]))
+        self.btn_tb_full_screen.setIcon(QIcon(
+            f'{INCLUDES['fullscreen.png'][0]}'.replace('\\', '/')))
         self.btn_tb_full_screen.setIconSize(QSize(20, 20))
         self.btn_tb_full_screen.setFixedSize(QSize(30, 30))
-        self.btn_tb_full_screen.setObjectName('top_bar_buttons')
+        self.btn_tb_full_screen.setObjectName('BF-Buttons')
         self.btn_tb_full_screen.clicked.connect(self._full_screen)
 
         # --- кнопка выхода ---
         self.btn_tb_exit = QPushButton(self.widget_top_bar_frame)
-        # self.btn_tb_exit.setFont(self.spec_font)
-        # self.btn_tb_exit.setText('✖')  # TODO: использовать иконку
-        # self.btn_tb_exit.setIcon(QIcon('bin/resources/close.png'))
-        self.btn_tb_exit.setIcon(QIcon(INCLUDES['close.png'][2]))
+        self.btn_tb_exit.setIcon(QIcon(
+            f'{INCLUDES['close.png'][0]}'.replace('\\', '/')))
         self.btn_tb_exit.setIconSize(QSize(15, 15))
         self.btn_tb_exit.setFixedSize(QSize(30, 30))
-        self.btn_tb_exit.setObjectName('top_bar_buttons')
+        self.btn_tb_exit.setObjectName('BF-Buttons')
         self.btn_tb_exit.clicked.connect(self._exit)
 
         # --- горизонтальный layout для верхней панели ---
@@ -132,32 +124,32 @@ class MainWindowUI(QWidget):
         self.lbl_modes_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_modes_title.setMaximumHeight(50)
         self.lbl_modes_title.setMinimumSize(QSize(350, 50))
-        self.lbl_modes_title.setObjectName('lbl_modes_title')
+        self.lbl_modes_title.setObjectName('CA-Sections')
 
         # --- режим ванны: очистка ---
         self.rb_mode_1 = QRadioButton()
         self.rb_mode_1.setFont(self.default_font)
         self.rb_mode_1.setText('Очистка')
-        self.rb_mode_1.setObjectName('rb_modes')
+        self.rb_mode_1.setObjectName('CA-Modes-RadioButtons')
 
         # --- режим ванны: нанесение ---
         self.rb_mode_2 = QRadioButton()
         self.rb_mode_2.setFont(self.default_font)
         self.rb_mode_2.setText('Нанесение')
-        self.rb_mode_2.setObjectName('rb_modes')
+        self.rb_mode_2.setObjectName('CA-Modes-RadioButtons')
 
         # --- режим ванны: движение ---
         self.rb_mode_3 = QRadioButton()
         self.rb_mode_3.setFont(self.default_font)
         self.rb_mode_3.setText('Движение')
         self.rb_mode_3.setChecked(True)
-        self.rb_mode_3.setObjectName('rb_modes')
+        self.rb_mode_3.setObjectName('CA-Modes-RadioButtons')
 
         # --- режим ванны: π-А изотерма ---
         self.rb_mode_4 = QRadioButton()
         self.rb_mode_4.setFont(self.default_font)
         self.rb_mode_4.setText('π-А изотерма')
-        self.rb_mode_4.setObjectName('rb_modes')
+        self.rb_mode_4.setObjectName('CA-Modes-RadioButtons')
 
         # --- группа кнопок ---
         self.rb_group = QButtonGroup()
@@ -192,7 +184,7 @@ class MainWindowUI(QWidget):
         self.lbl_input_data_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_input_data_title.setMaximumHeight(50)
         self.lbl_input_data_title.setMinimumSize(QSize(350, 50))
-        self.lbl_input_data_title.setObjectName('lbl_input_data_title')
+        self.lbl_input_data_title.setObjectName('CA-Sections')
 
         # --- параметр: значение концентрации ---
         self.lbl_input_data_1 = QLabel()
@@ -295,21 +287,21 @@ class MainWindowUI(QWidget):
         self.btn_increase_area.setFont(self.default_font)
         self.btn_increase_area.setText('ПЛЮС')
         self.btn_increase_area.setFixedSize(QSize(100, 100))
-        self.btn_increase_area.setObjectName('triple_buttons')
+        self.btn_increase_area.setObjectName('CA-TripleButtons')
 
         # --- кнопка: старт/стоп ---
         self.btn_start_stop = QPushButton()
         self.btn_start_stop.setFont(self.default_font)
         self.btn_start_stop.setText('СТАРТ\nСТОП')
         self.btn_start_stop.setFixedSize(QSize(100, 100))
-        self.btn_start_stop.setObjectName('triple_buttons')
+        self.btn_start_stop.setObjectName('CA-TripleButtons')
 
         # --- кнопка: уменьшить область ---
         self.btn_decrease_area = QPushButton()
         self.btn_decrease_area.setFont(self.default_font)
         self.btn_decrease_area.setText('МИНУС')
         self.btn_decrease_area.setFixedSize(QSize(100, 100))
-        self.btn_decrease_area.setObjectName('triple_buttons')
+        self.btn_decrease_area.setObjectName('CA-TripleButtons')
 
         # --- горизонтальный layout для кнопок ---
         self.butttons_hlayout = QHBoxLayout(self.widget_butttons_frame)
@@ -353,7 +345,7 @@ class MainWindowUI(QWidget):
         self.lbl_output_data_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_output_data_title.setMaximumHeight(50)
         self.lbl_output_data_title.setMinimumSize(QSize(350, 50))
-        self.lbl_output_data_title.setObjectName('lbl_output_data_title')
+        self.lbl_output_data_title.setObjectName('CA-Sections')
 
         # --- параметр: значение поверхностного давления ---
         self.lbl_output_data_1 = QLabel()
@@ -400,7 +392,7 @@ class MainWindowUI(QWidget):
         self.btn_reset_pressure.setFont(self.default_font)
         self.btn_reset_pressure.setText('π=0')
         self.btn_reset_pressure.setFixedSize(QSize(90, 90))
-        self.btn_reset_pressure.setObjectName('btn_reset_pressure')
+        self.btn_reset_pressure.setObjectName('CA-BtnResetPressure')
         self.btn_reset_pressure.clicked.connect(None)  # TODO: реализовать метод
 
         # --- вертикальный layout для параметров ---
@@ -464,7 +456,7 @@ class MainWindowUI(QWidget):
         # --- нижняя панель ---
         self.widget_bottom_bar_frame = QWidget(self)
         self.widget_bottom_bar_frame.setFixedHeight(30)
-        self.widget_bottom_bar_frame.setObjectName('widget_bottom_bar_frame')
+        self.widget_bottom_bar_frame.setObjectName('BarFrame')
 
         # --- индикатор COM порта ---
         self.lbl_com_port_status = QLabel()
@@ -480,7 +472,7 @@ class MainWindowUI(QWidget):
         self.btn_open_com_port.setFont(QFont('Sans Serif', 10))
         self.btn_open_com_port.setText('ОТКРЫТЬ')
         self.btn_open_com_port.setFixedSize(QSize(120, 20))
-        self.btn_open_com_port.setObjectName('btn_open_close_com_port')
+        self.btn_open_com_port.setObjectName('BF-Buttons')
         self.btn_open_com_port.clicked.connect(self._open_port_clicked)
 
         # --- кнопка закрытия COM порта ---
@@ -488,7 +480,7 @@ class MainWindowUI(QWidget):
         self.btn_close_com_port.setFont(QFont('Sans Serif', 10))
         self.btn_close_com_port.setText('ЗАКРЫТЬ')
         self.btn_close_com_port.setFixedSize(QSize(120, 20))
-        self.btn_close_com_port.setObjectName('btn_open_close_com_port')
+        self.btn_close_com_port.setObjectName('BF-Buttons')
         self.btn_close_com_port.hide()
         self.btn_close_com_port.clicked.connect(self._close_port_clicked)
         
@@ -499,10 +491,14 @@ class MainWindowUI(QWidget):
         self.btn_open_weighers_menu.setFixedSize(QSize(120, 20))
         self.btn_open_weighers_menu.setEnabled(
             self.cfg_handler.get('weighers')['use_weighers'])
-        self.btn_open_weighers_menu.setObjectName('btn_open_weighers_menu')
+        self.btn_open_weighers_menu.setStyleSheet('[enabled="false"]{color: gray;}')
+        self.btn_open_weighers_menu.setObjectName('BF-Buttons')
         self.btn_open_weighers_menu.clicked.connect(self._show_weighers_menu)
 
         # --- изменение размера окна ---
+        self.bottom_left_size_grip = QSizeGrip(self.widget_bottom_bar_frame)
+        self.bottom_left_size_grip.setFixedSize(QSize(30, 30))
+
         self.bottom_right_size_grip = QSizeGrip(self.widget_bottom_bar_frame)
         self.bottom_right_size_grip.setFixedSize(QSize(30, 30))
 
@@ -512,6 +508,7 @@ class MainWindowUI(QWidget):
         self.bottom_bar_hlayout.setSpacing(0)
 
         # --- горизонтальный layout для нижней панели: зависимости ---
+        self.bottom_bar_hlayout.addWidget(self.bottom_left_size_grip)
         self.bottom_bar_hlayout.addWidget(self.lbl_com_port_status)
         self.bottom_bar_hlayout.addWidget(self.btn_open_com_port)
         self.bottom_bar_hlayout.addWidget(self.btn_close_com_port)
@@ -589,8 +586,7 @@ class MainWindowUI(QWidget):
 
     def _exit(self):
         # TODO: сделать проверку состояния COM порта
-        # exit()
-        self.close()
+        sys.exit()
 
     def _show_weighers_menu(self):
         self.weighers_win = WeighersWindowUI()

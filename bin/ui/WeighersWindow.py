@@ -1,16 +1,13 @@
 from PySide6.QtWidgets import (
     QWidget, QLabel, QPushButton, 
     QHBoxLayout, QVBoxLayout, QComboBox, 
-    QCheckBox, QMessageBox, QSpacerItem, 
-    QSizePolicy
+    QSpacerItem, QSizePolicy
 )
 from PySide6.QtGui import QCursor, QFont, QIcon
 from PySide6.QtCore import Qt, QSize
 
-from settings import CFG_PATH, INCLUDES, middle_path
-from bin.ui.styles import WEIGHERS_WINDOW
+from settings import CFG_PATH, INCLUDES
 from bin.handlers.ConfigurationFile import ConfigurationFileH
-from bin.handlers.Serial import SerialH
 
 
 class WeighersWindowUI(QWidget):
@@ -44,13 +41,12 @@ class WeighersWindowUI(QWidget):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | 
                             Qt.WindowType.WindowStaysOnTopHint)
         self.setMinimumSize(350, 200)
-        self.setStyleSheet(WEIGHERS_WINDOW)
         self.setObjectName('WeighersWindowUI')
 
         # --- верхняя панель ---
         self.widget_top_bar_frame = QWidget()
         self.widget_top_bar_frame.setFixedHeight(30)
-        self.widget_top_bar_frame.setObjectName('widget_top_bar_frame')
+        self.widget_top_bar_frame.setObjectName('BarFrame')
         
         # --- основная область ---
         self.widget_central_area = QWidget()
@@ -62,28 +58,24 @@ class WeighersWindowUI(QWidget):
         self.lbl_tb_title.setText('Меню весов | BETA')
         self.lbl_tb_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.lbl_tb_title.setFixedWidth(200)
-        self.lbl_tb_title.setObjectName('lbl_tb_title')
+        self.lbl_tb_title.setObjectName('BF-Title')
 
         # --- кнопка минимизации ---
         self.btn_tb_minimize = QPushButton()
-        # self.btn_tb_minimize.setFont(self.spec_font)
-        # self.btn_tb_minimize.setText('▬')  # TODO: использовать иконку
-        # self.btn_tb_minimize.setIcon(QIcon('bin/resources/minus.png'))
-        self.btn_tb_minimize.setIcon(QIcon(INCLUDES['minus.png'][2]))
+        self.btn_tb_minimize.setIcon(QIcon(
+            f'{INCLUDES['minus.png'][0]}'.replace('\\', '/')))
         self.btn_tb_minimize.setIconSize(QSize(20, 20))
         self.btn_tb_minimize.setFixedSize(QSize(30, 30))
-        self.btn_tb_minimize.setObjectName('top_bar_buttons')
+        self.btn_tb_minimize.setObjectName('BF-Buttons')
         self.btn_tb_minimize.clicked.connect(self.showMinimized)
 
         # --- кнопка выхода ---
         self.btn_tb_exit = QPushButton(self.widget_top_bar_frame)
-        # self.btn_tb_exit.setFont(self.spec_font)
-        # self.btn_tb_exit.setText('✖')  # TODO: использовать иконку
-        # self.btn_tb_exit.setIcon(QIcon('bin/resources/close.png'))
-        self.btn_tb_exit.setIcon(QIcon(INCLUDES['close.png'][2]))
+        self.btn_tb_exit.setIcon(QIcon(
+            f'{INCLUDES['close.png'][0]}'.replace('\\', '/')))
         self.btn_tb_exit.setIconSize(QSize(15, 15))
         self.btn_tb_exit.setFixedSize(QSize(30, 30))
-        self.btn_tb_exit.setObjectName('top_bar_buttons')
+        self.btn_tb_exit.setObjectName('BF-Buttons')
         self.btn_tb_exit.clicked.connect(self._exit)
 
         # --- горизонтальный layout для верхней панели ---

@@ -1,13 +1,13 @@
 from PySide6.QtWidgets import (
     QWidget, QLabel, QPushButton, 
     QHBoxLayout, QVBoxLayout, QComboBox, 
-    QCheckBox, QMessageBox
+    QCheckBox, QMessageBox, QSpacerItem, 
+    QSizePolicy
 )
 from PySide6.QtGui import QCursor, QFont
 from PySide6.QtCore import Qt, QSize
 
-from settings import CFG_PATH, INCLUDES
-from bin.ui.styles import SETTINGS_WINDOW
+from settings import CFG_PATH
 from bin.handlers.ConfigurationFile import ConfigurationFileH
 from bin.handlers.Serial import SerialH
 
@@ -19,6 +19,7 @@ class SettingsWindowUI(QWidget):
         self.btn_weighers_menu = btn_weighers_menu
         self.old_pos = None
         self.default_font = QFont('Sans Serif', 16)
+        self.spec_font = QFont('Sans Serif', 14)
         self.cfg_handler = ConfigurationFileH(CFG_PATH)
     
     def setup_ui(self):
@@ -27,13 +28,29 @@ class SettingsWindowUI(QWidget):
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | 
                             Qt.WindowType.WindowStaysOnTopHint)
         self.setMinimumSize(QSize(350, 470))
-        self.setStyleSheet(SETTINGS_WINDOW)
         self.setObjectName('SettingsWindowUI')
 
         # --- верхняя панель ---
         self.widget_top_bar_frame = QWidget()
         self.widget_top_bar_frame.setFixedHeight(30)
-        self.widget_top_bar_frame.setObjectName('widget_top_bar_frame')
+        self.widget_top_bar_frame.setObjectName('BarFrame')
+
+        # --- название окна ---
+        self.lbl_tb_title = QLabel()
+        self.lbl_tb_title.setFont(self.spec_font)
+        self.lbl_tb_title.setText('Настройки')
+        self.lbl_tb_title.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.lbl_tb_title.setFixedWidth(200)
+        self.lbl_tb_title.setObjectName('BF-Title')
+
+        # --- горизонтальный layout для верхней панели ---
+        self.top_bar_hlayout = QHBoxLayout(self.widget_top_bar_frame)
+        self.top_bar_hlayout.setContentsMargins(10, 0, 0, 0)
+        self.top_bar_hlayout.setSpacing(0)
+        self.top_bar_hlayout.addWidget(self.lbl_tb_title)
+        self.top_bar_hlayout.addSpacerItem(QSpacerItem(50, 30, 
+                                                       QSizePolicy.Policy.Expanding, 
+                                                       QSizePolicy.Policy.Minimum))
 
         # --- основная область ---
         self.widget_central_area = QWidget()
@@ -46,10 +63,10 @@ class SettingsWindowUI(QWidget):
         self.lbl_theme.setMinimumSize(QSize(150, 50))
         self.lbl_theme.setObjectName('labels_name')
 
+        self.cb_theme_items = ['Dark', 'Light']
         self.cb_theme = QComboBox()
         self.cb_theme.setFont(self.default_font)
         self.cb_theme.setMinimumSize(QSize(100, 50))
-        self.cb_theme_items = ['Dark', 'Light']
         self.cb_theme.addItems(self.cb_theme_items)
         self.cb_theme.setCurrentIndex(self.cb_theme_items.index(
             self.cfg_handler.get('app')['theme']))
@@ -109,6 +126,7 @@ class SettingsWindowUI(QWidget):
         self.chb_use_weighers.setText('Использовать весы?')
         self.chb_use_weighers.setMinimumSize(QSize(250, 50))
         self.chb_use_weighers.setChecked(self.cfg_handler.get('weighers')['use_weighers'])
+        self.chb_use_weighers.setStyleSheet("""""")
         self.chb_use_weighers.setObjectName('chb_use_weighers')
         self.chb_use_weighers.stateChanged.connect(self._show_more_settings)
 

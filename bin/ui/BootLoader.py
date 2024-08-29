@@ -1,14 +1,19 @@
 from sys import exit
 from pathlib import Path
 
-from PySide6.QtWidgets import QWidget, QTextEdit, QPushButton
-from PySide6.QtCore import Qt, QSize, QRect, QTimer
+from PySide6.QtWidgets import (
+    QWidget, QTextEdit, QPushButton, 
+    QVBoxLayout
+)
+from PySide6.QtCore import (
+    Qt, QSize, QTimer, 
+    QPoint
+)
 from PySide6.QtGui import QFont
 
 from bin.handlers.types import *
 from bin.handlers.ConfigurationFile import ConfigurationFileH
 from bin.ui.MainWindow import MainWindowUI
-from bin.ui.styles import BOOT_LOADER
 
 
 class BootLoaderUI(QWidget):
@@ -18,33 +23,46 @@ class BootLoaderUI(QWidget):
         self.cfg_path = cfg_path
         self.includes = includes
         self.default_font = QFont('Sans Serif', 16)
-        self.spec_font = QFont('Sans Serif', 12)
         self.cfg_handler = ConfigurationFileH(self.cfg_path)
     
     def setup_ui(self):
-        self.setFixedSize(QSize(600, 300))
+        # --- настройка окна ---
         self.setWindowOpacity(0.8)  # прозрачность окна
         self.setWindowFlags(Qt.WindowType.FramelessWindowHint | 
                             Qt.WindowType.WindowStaysOnTopHint)
-        self.setStyleSheet(BOOT_LOADER)
+        self.setMinimumSize(QSize(640, 300))
         self.setObjectName('BootLoaderUI')
 
-        self.ted_processing = QTextEdit(self)
-        self.ted_processing.setGeometry(QRect(5, 5, 590, 260))
+        # --- вывод состояния проверок ---
+        self.ted_processing = QTextEdit()
+        self.ted_processing.setMinimumSize(QSize(590, 260))
         self.ted_processing.setFont(self.default_font)
         self.ted_processing.insertPlainText(
             'Проверяем целостность программы перед запуском...'
         )
         self.ted_processing.setReadOnly(True)
-        self.ted_processing.setObjectName('ted_processing')
+        self.ted_processing.setObjectName('Processing')
 
-        self.btn_exit = QPushButton(self)
-        self.btn_exit.setGeometry(QRect(5, 265, 590, 30))
+        # --- кнопка выхода ---
+        self.btn_exit = QPushButton()
+        self.btn_exit.setMinimumSize(QSize(590, 30))
         self.btn_exit.setFont(self.default_font)
         self.btn_exit.setText('Закрыть приложение'.upper())
-        self.btn_exit.setObjectName('btn_exit')
+        self.btn_exit.setObjectName('BtnExit')
         self.btn_exit.hide()
         self.btn_exit.clicked.connect(exit)
+
+        # --- вертикальный layout для всего окна ---
+        self.general_vlayout = QVBoxLayout(self)
+        self.general_vlayout.setContentsMargins(10, 10, 10, 10)
+        self.general_vlayout.addSpacing(10)
+
+        # --- вертикальный layout для всего окна: зависимости ---
+        self.general_vlayout.addWidget(self.ted_processing)
+        self.general_vlayout.addWidget(self.btn_exit)
+
+        self.move(self.screen().availableGeometry().center() - 
+                  QPoint(self.width() // 2, self.height() // 2))
 
         # Нужно для корректной работы программы
         if self._check_program_structure():

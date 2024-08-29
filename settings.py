@@ -3,7 +3,7 @@ import os
 from pathlib import Path
 
 
-__version__ = '1.6.1'  # global.major.minor
+__version__ = '1.6.2'  # global.major.minor
 __app_name__ = 'Gemera'
 __author__ = 'WoollySensed Software'
 
@@ -15,38 +15,31 @@ middle_path = 'bin/resources'
 INCLUDES = {
     'app.ico': [
         Path(f'{ROOT_DIR}/{middle_path}/app.ico').resolve(), 
-        Path(f'{ROOT_DIR}/{middle_path}').resolve(), 
-        f'{middle_path}/app.ico'
+        Path(f'{ROOT_DIR}/{middle_path}').resolve()
     ], 
     'close.png': [
         Path(f'{ROOT_DIR}/{middle_path}/close.png').resolve(), 
-        Path(f'{ROOT_DIR}/{middle_path}').resolve(), 
-        f'{middle_path}/close.png'
+        Path(f'{ROOT_DIR}/{middle_path}').resolve()
     ], 
     'fullscreen.png': [
         Path(f'{ROOT_DIR}/{middle_path}/fullscreen.png').resolve(), 
-        Path(f'{ROOT_DIR}/{middle_path}').resolve(), 
-        f'{middle_path}/fullscreen.png'
+        Path(f'{ROOT_DIR}/{middle_path}').resolve()
     ], 
     'gear.png': [
         Path(f'{ROOT_DIR}/{middle_path}/gear.png').resolve(), 
-        Path(f'{ROOT_DIR}/{middle_path}').resolve(), 
-        f'{middle_path}/gear.png'
+        Path(f'{ROOT_DIR}/{middle_path}').resolve()
     ], 
     'minus.png': [
         Path(f'{ROOT_DIR}/{middle_path}/minus.png').resolve(), 
-        Path(f'{ROOT_DIR}/{middle_path}').resolve(), 
-        f'{middle_path}/minus.png'
+        Path(f'{ROOT_DIR}/{middle_path}').resolve()
     ], 
     'switch-off.png': [
         Path(f'{ROOT_DIR}/{middle_path}/switch-off.png').resolve(), 
-        Path(f'{ROOT_DIR}/{middle_path}').resolve(), 
-        f'{middle_path}/switch-off.png'
+        Path(f'{ROOT_DIR}/{middle_path}').resolve()
     ], 
     'switch-on.png': [
         Path(f'{ROOT_DIR}/{middle_path}/switch-on.png').resolve(), 
-        Path(f'{ROOT_DIR}/{middle_path}').resolve(), 
-        f'{middle_path}/switch-on.png'
+        Path(f'{ROOT_DIR}/{middle_path}').resolve()
     ]
 }
 # Файл конфигурации по умолчанию

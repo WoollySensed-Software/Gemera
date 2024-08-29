@@ -1,0 +1,203 @@
+/* 
+Осн. цвет окна: #343434
+Втор. цвет окна: #28282B
+*/
+
+QWidget {
+    background: #343434;
+    color: white;
+}
+
+QWidget#BarFrame {
+    background: #28282B;
+    color: white;
+}
+
+QWidget#BootLoaderUI {
+    background: #00008B;
+    color: white;
+}
+
+
+QSizeGrip {
+    background: #28282B;
+}
+
+
+QPushButton {
+    background: #343434;
+    color: red;
+    border-radius: 15%;
+}
+QPushButton:hover {
+    background: rgba(0, 173, 255, 0.2);
+}
+QPushButton:pressed {
+    background: rgba(0, 173, 255, 0.5);
+}
+
+QPushButton#BtnExit{
+    background: #FF5F1F;
+    color: white;
+    border-radius: 15%;
+}
+QPushButton#BtnExit:hover{
+    background: #DF531B;
+}
+QPushButton#BtnExit:pressed{
+    background: #BF4717;
+}
+
+QPushButton#BF-Buttons {
+    background: #28282B;
+    color: red;
+    border-radius: 10%;
+}
+QPushButton#BF-Buttons:hover {
+    background: rgba(0, 173, 255, 0.2);
+}
+QPushButton#BF-Buttons:pressed {
+    background: rgba(0, 173, 255, 0.5);
+}
+
+QPushButton#CA-TripleButtons{
+    background: #FF5F1F;
+    color: white;
+    border-radius: 50%;
+}
+QPushButton#CA-TripleButtons:hover{
+    background: #DF531B;
+}
+QPushButton#CA-TripleButtons:pressed{
+    background: #BF4717;
+}
+
+QPushButton#CA-BtnResetPressure{
+    background: #FF5F1F;
+    color: white;
+    border-radius: 45%;
+}
+QPushButton#CA-BtnResetPressure:hover{
+    background: #DF531B;
+}
+QPushButton#CA-BtnResetPressure:pressed{
+    background: #BF4717;
+}
+
+
+QRadioButton#CA-Modes-RadioButtons {
+    background: #343434;
+    color: white;
+}
+QRadioButton#CA-Modes-RadioButtons:hover {
+    background: rgba(255, 95, 31, 0.5);
+    border-radius: 10%;
+}
+QRadioButton#CA-Modes-RadioButtons:pressed {
+    background: #BF4717;
+    border-radius: 10%;
+}
+QRadioButton#CA-Modes-RadioButtons:checked {
+    background: #FF5F1F;
+    border-radius: 10%;
+}
+QRadioButton#CA-Modes-RadioButtons::indicator {
+    border: red;
+}
+
+
+QLabel {
+    background: #343434;
+    color: white;
+}
+QLabel[enabled="false"] {
+    color: gray;
+}
+
+QLabel#BF-Title {
+    background: #28282B;
+    color: white;
+}
+
+QLabel#CA-Sections {
+    background: #28282B;
+    color: white;
+    border-radius: 15%;
+}
+
+
+QLineEdit {
+    background: #343434;
+    color: white;
+    border: 1px solid #343434;
+}
+
+
+QTextEdit#Processing {
+    background: #00008B;
+    color: white;
+    border: 1px solid #00008B;
+}
+
+
+QCheckBox {
+    background: #343434;
+    color: white;
+}
+QCheckBox::indicator {
+    background: 343434;
+    width: 30px;
+    height: 30px;
+}
+QCheckBox::indicator:unchecked {
+    image: url(bin/resources/switch-off.png);
+}
+QCheckBox::indicator:checked {
+    image: url(bin/resources/switch-on.png);
+}
+
+
+QComboBox {
+    background: #28282B;
+    color: white;
+    border: 1px solid #343434;
+}
+QComboBox:drop-down {
+    width: 0px;
+    height: 0px;
+    border: 0px;
+}
+QComboBox QAbstractItemView {
+    color: white;	
+    background-color: #28282B;
+    padding: 5px;
+}
+QComboBox QScrollBar {
+    width: 0px;
+    height: 0px;
+    border: 0px;
+}
+QComboBox[enabled="false"] {
+    color: gray;
+}
+
+
+QMessageBox {
+    background: #28282B;
+    color: white;
+}
+QMessageBox QLabel{
+    background: #28282B;
+    color: white;
+}
+QMessageBox QPushButton{
+    background: #28282B;
+    color: #FF0000;
+    border-radius: 15%;
+}
+QMessageBox QPushButton:hover{
+    background: rgba(0, 173, 255, 0.1);
+}
+QMessageBox QPushButton:pressed{
+    background: rgba(0, 173, 255, 0.5);
+}
