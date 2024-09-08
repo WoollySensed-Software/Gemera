@@ -2,7 +2,7 @@ from PySide6.QtWidgets import (
     QWidget, QLabel, QPushButton, 
     QHBoxLayout, QVBoxLayout, QComboBox, 
     QCheckBox, QMessageBox, QSpacerItem, 
-    QSizePolicy
+    QSizePolicy, QApplication
 )
 from PySide6.QtGui import QCursor, QFont
 from PySide6.QtCore import Qt, QSize
@@ -14,13 +14,14 @@ from bin.handlers.Serial import SerialH
 
 class SettingsWindowUI(QWidget):
 
-    def __init__(self, btn_weighers_menu: QPushButton):
+    def __init__(self, btn_weighers_menu: QPushButton, app: QApplication):
         super().__init__()
+        self.app = app
         self.btn_weighers_menu = btn_weighers_menu
         self.old_pos = None
         self.default_font = QFont('Sans Serif', 16)
         self.spec_font = QFont('Sans Serif', 14)
-        self.cfg_handler = ConfigurationFileH(CFG_PATH)
+        self.cfg_handler = ConfigurationFileH(CFG_PATH, use_exists_check=False)
     
     def setup_ui(self):
         # --- настройки окна ---
@@ -273,6 +274,7 @@ class SettingsWindowUI(QWidget):
             self.move(self.pos() + delta)
 
     def _show_more_settings(self):
+        self.current_theme = self.cfg_handler.get('app')['theme']
         self.check_state = self.chb_use_weighers.isChecked()
 
         self.lbl_weighers_com_port.setEnabled(self.check_state)
@@ -280,7 +282,8 @@ class SettingsWindowUI(QWidget):
         self.lbl_weighers_baud_rate.setEnabled(self.check_state)
         self.cb_weighers_baud_rate.setEnabled(self.check_state)
         self.btn_weighers_menu.setEnabled(self.check_state)
-
+        
+        # TODO: придумать, как можно сократить код в этом участке
         if not self.check_state:
             self.lbl_weighers_com_port.setStyleSheet('[enabled="false"]{color: gray;}')
             self.cb_weighers_com_port.setStyleSheet('[enabled="false"]{color: gray;}')
@@ -289,10 +292,16 @@ class SettingsWindowUI(QWidget):
 
             self.btn_weighers_menu.setStyleSheet('[enabled="false"]{color: gray;}')
         else:
-            self.lbl_weighers_com_port.setStyleSheet('[enabled="true"]{color: white;}')
-            self.cb_weighers_com_port.setStyleSheet('[enabled="true"]{color: white;}')
-            self.lbl_weighers_baud_rate.setStyleSheet('[enabled="true"]{color: white;}')
-            self.cb_weighers_baud_rate.setStyleSheet('[enabled="true"]{color: white;}')
+            if self.current_theme == 'Dark':
+                self.lbl_weighers_com_port.setStyleSheet('[enabled="true"]{color: white;}')
+                self.cb_weighers_com_port.setStyleSheet('[enabled="true"]{color: white;}')
+                self.lbl_weighers_baud_rate.setStyleSheet('[enabled="true"]{color: white;}')
+                self.cb_weighers_baud_rate.setStyleSheet('[enabled="true"]{color: white;}')
+            elif self.current_theme == 'Light':
+                self.lbl_weighers_com_port.setStyleSheet('[enabled="true"]{color: black;}')
+                self.cb_weighers_com_port.setStyleSheet('[enabled="true"]{color: black;}')
+                self.lbl_weighers_baud_rate.setStyleSheet('[enabled="true"]{color: black;}')
+                self.cb_weighers_baud_rate.setStyleSheet('[enabled="true"]{color: black;}')
 
             self.btn_weighers_menu.setStyleSheet('[enabled="true"]{color: red;}')
 
@@ -312,10 +321,10 @@ class SettingsWindowUI(QWidget):
     def _apply_clicked(self):
         theme = self.cb_theme.currentText()
         com_port = self.cb_com_port.currentText()
-        baud_rate = self.cb_baud_rate.currentText()
+        baud_rate = int(self.cb_baud_rate.currentText())
         use_weighers = self.chb_use_weighers.isChecked()
         weighers_com_port = self.cb_weighers_com_port.currentText()
-        weighers_baud_rate = self.cb_weighers_baud_rate.currentText()
+        weighers_baud_rate = int(self.cb_weighers_baud_rate.currentText())
 
         self.cfg_handler.set('app', {'theme': theme})
         self.cfg_handler.set('serial', {'COM': com_port, 
@@ -323,6 +332,11 @@ class SettingsWindowUI(QWidget):
         self.cfg_handler.set('weighers', {'use_weighers': use_weighers, 
                                          'COM': weighers_com_port, 
                                          'BAUD': weighers_baud_rate})
+        
+
+        with open(f'bin/ui/styles_{theme}.qss', 'r') as f:
+            styles = f.read()
+            self.app.setStyleSheet(styles)
 
     def _to_default_clicked(self):
         self.msg = QMessageBox(self)

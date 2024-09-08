@@ -4,10 +4,14 @@ from PySide6.QtWidgets import (
     QWidget, QLabel, QPushButton, 
     QRadioButton, QButtonGroup, QLineEdit, 
     QHBoxLayout, QVBoxLayout, QSpacerItem, 
-    QSizePolicy, QSizeGrip
+    QSizePolicy, QSizeGrip, QApplication
 )
 from PySide6.QtGui import QCursor, QFont, QIcon
-from PySide6.QtCore import Qt, QSize, QPoint
+from PySide6.QtCore import (
+    Qt, QSize, QPoint, 
+    QIODevice
+)
+from PySide6.QtSerialPort import QSerialPort
 
 from settings import __app_name__, CFG_PATH, INCLUDES
 from bin.handlers.ConfigurationFile import ConfigurationFileH
@@ -18,15 +22,18 @@ from bin.ui.WeighersWindow import WeighersWindowUI
 
 class MainWindowUI(QWidget):
 
-    def __init__(self):
+    def __init__(self, app: QApplication):
         super().__init__()
+        self.app = app
         self.old_pos = None
         self.full_screen_flag = False
+        self.rx_buffer = []
         self.default_font = QFont('Sans Serif', 16)
         self.spec_font = QFont('Sans Serif', 14)
-        self.cfg_handler = ConfigurationFileH(CFG_PATH)
+        self.cfg_handler = ConfigurationFileH(CFG_PATH, use_exists_check=False)
         self.default_width = self.cfg_handler.get('app')['display_w']
         self.default_height = self.cfg_handler.get('app')['display_h']
+        self.serial_port = QSerialPort()
     
     def setup_ui(self):
         # --- настройки окна ---
@@ -393,7 +400,7 @@ class MainWindowUI(QWidget):
         self.btn_reset_pressure.setText('π=0')
         self.btn_reset_pressure.setFixedSize(QSize(90, 90))
         self.btn_reset_pressure.setObjectName('CA-BtnResetPressure')
-        self.btn_reset_pressure.clicked.connect(None)  # TODO: реализовать метод
+        self.btn_reset_pressure.clicked.connect(self.__test_send_msg_to_port)  # TODO: реализовать метод
 
         # --- вертикальный layout для параметров ---
         self.vlayout_output_data = QVBoxLayout()
@@ -573,7 +580,7 @@ class MainWindowUI(QWidget):
                     ))
 
     def _show_settings(self):
-        self.settings_win = SettingsWindowUI(self.btn_open_weighers_menu)
+        self.settings_win = SettingsWindowUI(self.btn_open_weighers_menu, self.app)
         self.settings_win.setup_ui()
         self.settings_win.show()
 
@@ -585,7 +592,8 @@ class MainWindowUI(QWidget):
         self.settings_win.move(self.settings_win_x, self.settings_win_y)
 
     def _exit(self):
-        # TODO: сделать проверку состояния COM порта
+        if self.serial_port.isOpen():
+            self.serial_port.close()
         sys.exit()
 
     def _show_weighers_menu(self):
@@ -602,9 +610,29 @@ class MainWindowUI(QWidget):
 
     def _open_port_clicked(self):
         self.__change_com_port_status(self.btn_open_com_port.isVisible())
+        
+        self.cfg_handler.exists()
+        data = self.cfg_handler.get('serial')
+
+        self.serial_port.setPortName(data['COM'])
+        self.serial_port.setBaudRate(data['BAUD'])
+        self.serial_port.open(QIODevice.OpenModeFlag.ReadWrite)
+        self.serial_port.readyRead.connect(self.__read_port)
+    
+    def __read_port(self):
+        rx = self.serial_port.readAll()
+
+        if rx != b'':
+            rx = str(rx, encoding='utf-8')
+            self.rx_buffer.append(rx)
+            print(self.rx_buffer)
 
     def _close_port_clicked(self):
         self.__change_com_port_status(self.btn_open_com_port.isVisible())
+        self.serial_port.close()
+    
+    def __test_send_msg_to_port(self):
+        self.serial_port.write('1'.encode())
 
     def __change_com_port_status(self, status: bool):
         if status:

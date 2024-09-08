@@ -17,7 +17,7 @@ class WeighersWindowUI(QWidget):
         self.old_pos = None
         self.default_font = QFont('Sans Serif', 16)
         self.spec_font = QFont('Sans Serif', 14)
-        self.cfg_handler = ConfigurationFileH(CFG_PATH)
+        self.cfg_handler = ConfigurationFileH(CFG_PATH, use_exists_check=False)
         self.commands = {
             # Команда проверки работоспособности датчика.
             '$MTM': None,

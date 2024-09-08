@@ -3,7 +3,7 @@ from pathlib import Path
 
 from PySide6.QtWidgets import (
     QWidget, QTextEdit, QPushButton, 
-    QVBoxLayout
+    QVBoxLayout, QApplication
 )
 from PySide6.QtCore import (
     Qt, QSize, QTimer, 
@@ -18,12 +18,13 @@ from bin.ui.MainWindow import MainWindowUI
 
 class BootLoaderUI(QWidget):
 
-    def __init__(self, cfg_path: Path, includes: Includes, /):
+    def __init__(self, cfg_path: Path, includes: Includes, /, app: QApplication):
         super().__init__()
+        self.app = app
         self.cfg_path = cfg_path
         self.includes = includes
         self.default_font = QFont('Sans Serif', 16)
-        self.cfg_handler = ConfigurationFileH(self.cfg_path)
+        self.cfg_handler = ConfigurationFileH(self.cfg_path, use_exists_check=False)
     
     def setup_ui(self):
         # --- настройка окна ---
@@ -92,7 +93,7 @@ class BootLoaderUI(QWidget):
         return True
 
     def _open_main_window(self):
-        self.main_win = MainWindowUI()
+        self.main_win = MainWindowUI(self.app)
         self.main_win.setup_ui()
         self.main_win.show()
         self.close()

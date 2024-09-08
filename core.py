@@ -13,14 +13,23 @@ except ImportError: pass
 
 from PySide6.QtWidgets import QApplication
 from PySide6.QtGui import QIcon
+from WSS_ToolKit.WConfigUtils.ConfigUtils import UniversalConfigFile as UCF
 
+from bin.handlers.ConfigurationFile import ConfigurationFileH
 from bin.ui.BootLoader import BootLoaderUI
 from settings import (__version__, __app_name__, __author__, 
                       CFG_PATH, INCLUDES)
 
 
-def main():
-    with open('bin/ui/styles.qss', 'r') as f:
+def get_app_theme() -> str:
+    cfg_handler = ConfigurationFileH(CFG_PATH, use_exists_check=False)
+    cfg_handler.exists()
+
+    return cfg_handler.get('app')['theme']
+
+
+def main(theme: str):
+    with open(f'bin/ui/styles_{theme}.qss', 'r') as f:
         styles = f.read()
 
     app = QApplication(argv)
@@ -30,7 +39,7 @@ def main():
     app.setWindowIcon(QIcon(f'{INCLUDES['app.ico'][0]}'.replace('\\', '/')))
     app.setStyleSheet(styles)
 
-    boot_loader = BootLoaderUI(CFG_PATH, INCLUDES)
+    boot_loader = BootLoaderUI(CFG_PATH, INCLUDES, app)
     boot_loader.setup_ui()
     boot_loader.show()
 
@@ -38,4 +47,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main(get_app_theme())

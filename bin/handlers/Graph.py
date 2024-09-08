@@ -22,7 +22,7 @@ class GraphH(QWidget):
         pyg.setConfigOption(key, val)
 
     def plotGraph(self, data: tuple[list, list]) -> Nothing:
-        cfg_handler = ConfigurationFileH(CFG_PATH)
+        cfg_handler = ConfigurationFileH(CFG_PATH, use_exists_check=False)
         cfg_data = cfg_handler.get('graph')
 
         self.curve = self.view.plotItem.plot(name=cfg_data['name'], 
